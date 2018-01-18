@@ -18,6 +18,6 @@ from django.urls import path,include
 import WelfareLottery
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('WelfareLottery/', include('WelfareLottery.urls'))
+    path(r'admin/', admin.site.urls),
+    path(r'WelfareLottery/', include('WelfareLottery.urls'))
 ]
