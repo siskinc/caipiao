@@ -18,6 +18,7 @@ class WelfareLotteryList(APIView):
     return welfare_lottery_list
 
   def get(self, request, name):
-    welfare_lottery_list = self.get_object(name=name)
+    num = int(request.GET.get('num','10'))
+    welfare_lottery_list = self.get_object(name=name)[:num]
     serializer = WelfareLotterySerializer(welfare_lottery_list, many=True)
     return Response(serializer.data)
