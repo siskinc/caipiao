@@ -1,41 +1,25 @@
-from django.shortcuts import render
-from django.http import JsonResponse,Http404,HttpResponse
-from django.db import models
-from django.forms.models import model_to_dict
-from simplejson import dumps
-from . import models
+from django.http import HttpResponse, Http404
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework import status
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from WelfareLottery.models import WelfareLottery
+from WelfareLottery.serializers import WelfareLotterySerializer
 
-def award_info(request):
-  if request.method == 'GET':
-    raise Http404('Page not found')
-  name = request.POST.get('name','')
-  num = request.POST.get('num','')
-  if name in (None, '') or num in (None, ''):
-    return JsonResponse('text', 'name or num are need')
-  if not num.isdigit():
-    return JsonResponse('text', 'num must be a digit')
-  if int(num) > 30:
-    return JsonResponse('text', 'num must less than 30')
-  infos = models.WelfareLottery.objects.filter(name=name)[:int(num)]
-  result = []
-  print(type(model_to_dict(infos[0])))
-  for info in infos:
-    result.append(model_to_dict(info))
-  return HttpResponse(str(result).encode('utf-8'), content_type='application/json')
+class WelfareLotteryList(APIView):
 
+  def get_object(self, name):
+    try:
+      welfare_lottery_list = WelfareLottery.objects.filter(name=name)
+    except WelfareLottery.DoesNotExist:
+      raise Http404
+    return welfare_lottery_list
 
-def get_type(request):
-  if request.method == 'POST':
-    return JsonResponse('text', 'not found')
-  names = models.WelfareLottery.objects.values('name').distinct()
-  result = ''
-  count = 0
-  names = list(names)
-
-  for name in names:
-    if count == 0:
-      result = result + name['name']
-    else:
-      result = result + '|' + name['name']
-    count = count + 1
-  return HttpResponse(dumps({'types':result}), content_type='application/json')
+  def get(self, request, name):
+    print('a')
+    print(name)
+    welfare_lottery_list = self.get_object(name=name)
+    serializer = WelfareLotterySerializer(welfare_lottery_list, many=True)
+    return Response(serializer.data)

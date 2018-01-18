@@ -26,7 +26,7 @@ SECRET_KEY = '1ci()y%us)-p^nvgig9a^ov^a0h*78p2#n6n4v%6=k*qc=keh%'
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '120.79.195.26', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', '120.79.195.26', 'localhost', 'www.susecjh.cn']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'WelfareLottery',
 ]
 
