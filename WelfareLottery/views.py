@@ -12,7 +12,7 @@ class WelfareLotteryList(APIView):
 
   def get_object(self, name):
     try:
-      welfare_lottery_list = WelfareLottery.objects.get(name=name)
+      welfare_lottery_list = WelfareLottery.objects.filter(name=name)
     except WelfareLottery.DoesNotExist:
       raise Http404
     return welfare_lottery_list
@@ -21,6 +21,7 @@ class WelfareLotteryList(APIView):
     num = request.GET.get('num','10')
     if not num.isdigit():
       raise Http404
+    num = int(num)
     welfare_lottery_list = self.get_object(name=name)[:num]
     serializer = WelfareLotterySerializer(welfare_lottery_list, many=True)
     return Response(serializer.data)
