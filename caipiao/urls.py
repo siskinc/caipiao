@@ -16,8 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 import WelfareLottery
+import HighFrequencyLottery
 
 urlpatterns = [
     path(r'admin/', admin.site.urls),
-    path(r'WelfareLottery/', include('WelfareLottery.urls'))
+    path(r'WelfareLottery/', include('WelfareLottery.urls')),
+    path(r'HighFrequencyLottery/', include('HighFrequencyLottery.urls')),
 ]
